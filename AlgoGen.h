@@ -15,7 +15,7 @@ private:
 
 	double					per_elitism;
 
-	int						nGene;
+	int						nGene = 0;
 
 	vector<string>			header;							// Header do alfabeto
 	vector<vector<double>>	Alph;							// Alfabeto
@@ -44,11 +44,15 @@ public:
 	
 	}
 */
-	void					Fitness(double (*Fit)(vector<double>)){
+	void Fitness(double (*Fit)(vector<double>)){
 		this->Score.clear();
+		//cout << "\nSize: " << this->Population.size() << "\n";
+		
 		for(int i = 0; i < this->POP; ++i){
+			cout << "\nSize: " << this->Population[i].size() << "\n";
 			this->Score.push_back((*Fit)(this->Population[i]));
 		}
+		
 	}
 
 	
@@ -59,7 +63,8 @@ public:
 	void					Print(void);
 	
 
-	AlgoGen(int pop, int gener, int gener_wb, double elit);
+	void SetAlgoGen(int pop, int gener, int gener_wb, double elit);
+	AlgoGen(){}
 	~AlgoGen();
 };
 
@@ -92,6 +97,7 @@ vector<double> AlgoGen::Set_array(double inicial, double final, double step) {
 
 double AlgoGen::Sum(void) {
 	double S = 0;
+	cout << "POP: " << this->POP << "\t\t ScoreS: " << this->Score.size() << "\n";
 	for (int i = 0; i < this->POP; ++i) {
 		S += this->Score[i];
 	}
@@ -129,15 +135,15 @@ void AlgoGen::SelectParents(void){
 }
 
 void AlgoGen::Print(void) {
-
+	cout << "A\n";
 	double S = Sum();
 	double AC = 0;
-
-	std::cout << S << endl;
+	cout << "ASDASD\n";
+	cout << S << endl;
 
 	double rad = ((double)rand() / RAND_MAX) * S;
 	
-	std::cout << rad << endl;
+	cout << rad << endl;
 
 
 	int pos = -1;
@@ -148,14 +154,14 @@ void AlgoGen::Print(void) {
 
 	for (int i = 0; i < this->POP; ++i) {
 
-		std::cout << "#" << i << ":\t Cromossomo: ";
+		cout << "#" << i << ":\t Cromossomo: ";
 		for (int j = 0; j < this->nGene; ++j) {
-			std::cout << this->Population[i][j] << " ";
+			cout << this->Population[i][j] << " ";
 		}
 		AC += this->Score[i];
-		std::cout << "\t\tScore: " << this->Score[i] << " " << AC;
-		if (i == pos) std::cout << "\tPai";
-		std::cout << endl;
+		cout << "\t\tScore: " << this->Score[i] << " " << AC;
+		if (i == pos) cout << "\tPai";
+		cout << endl;
 		
 
 	}
@@ -167,7 +173,10 @@ void AlgoGen::Initializate(void) {
 	vector<double> temp;
 	for (int i = 0; i < this->POP; ++i) {
 		temp.clear();
+		//cout << this->nGene;
 		for (int j = 0; j < this->nGene; ++j) {
+			//int a = rand() % this->Alph[j].size();
+			
 			temp.push_back(
 				this->Alph[j][
 					rand() % this->Alph[j].size()
@@ -184,7 +193,7 @@ void AlgoGen::Initializate(void) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //															Construtores														  //
 
-AlgoGen::AlgoGen(int pop, int gener, int gener_wb, double elit){
+void AlgoGen::SetAlgoGen(int pop, int gener, int gener_wb, double elit){
 	this->POP = pop;
 	this->GENERATIONS = gener;
 	this->GENERATIONS_WITHOUT_BETTER = gener_wb;
