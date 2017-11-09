@@ -5,6 +5,7 @@ using namespace std;
 
 
 
+
 class AlgoGen
 {
 private:
@@ -33,27 +34,8 @@ public:
 	static vector<double>	Set_array(double inicial, double final, double step);
 	
 	void					Initializate(void);
-	/*
-	template<class T>
-	void					Fitness(T *Obj, double (T::*Fit)(vector<double>)) {
-		
-		this->Score.clear();
-		for (int i = 0; i < this->POP; ++i) {
-			this->Score.push_back((Obj->*Fit)(this->Population[i]));
-		}
-	
-	}
-*/
-	void Fitness(double (*Fit)(vector<double>)){
-		this->Score.clear();
-		//cout << "\nSize: " << this->Population.size() << "\n";
-		
-		for(int i = 0; i < this->POP; ++i){
-			cout << "\nSize: " << this->Population[i].size() << "\n";
-			this->Score.push_back((*Fit)(this->Population[i]));
-		}
-		
-	}
+
+	void 					Fitness(double (*Fit)(vector<double>));
 
 	
 	double					Sum(void);
@@ -61,6 +43,8 @@ public:
 	void					SelectParents(void);
 
 	void					Print(void);
+
+	bool					IsFather(int id);
 	
 
 	void SetAlgoGen(int pop, int gener, int gener_wb, double elit);
@@ -97,7 +81,6 @@ vector<double> AlgoGen::Set_array(double inicial, double final, double step) {
 
 double AlgoGen::Sum(void) {
 	double S = 0;
-	cout << "POP: " << this->POP << "\t\t ScoreS: " << this->Score.size() << "\n";
 	for (int i = 0; i < this->POP; ++i) {
 		S += this->Score[i];
 	}
@@ -131,26 +114,12 @@ void AlgoGen::SelectParents(void){
 		this->Pais_pos.push_back(temp[pos]);
 		temp.erase(temp.begin() + pos);
 	}
-	return;
 }
 
 void AlgoGen::Print(void) {
+
 	cout << "A\n";
-	double S = Sum();
 	double AC = 0;
-	cout << "ASDASD\n";
-	cout << S << endl;
-
-	double rad = ((double)rand() / RAND_MAX) * S;
-	
-	cout << rad << endl;
-
-
-	int pos = -1;
-	do {
-		pos++;
-		rad -= this->Score[pos];
-	} while (rad > 0);
 
 	for (int i = 0; i < this->POP; ++i) {
 
@@ -159,16 +128,24 @@ void AlgoGen::Print(void) {
 			cout << this->Population[i][j] << " ";
 		}
 		AC += this->Score[i];
-		cout << "\t\tScore: " << this->Score[i] << " " << AC;
-		if (i == pos) cout << "\tPai";
+		cout << "\t\tScore: " << this->Score[i] << " \tAcumulado: " << AC;
+		
+		if (IsFather(i)) cout << "\tPai";
 		cout << endl;
 		
 
 	}
 }
 
+bool AlgoGen::IsFather(int id){
+	for(auto i : this->Pais_pos){
+		if(i == id) return true;
+	}
+	return false;
+}
+
 void AlgoGen::Initializate(void) {
-	//srand(time(NULL));
+	srand(time(NULL));
 
 	vector<double> temp;
 	for (int i = 0; i < this->POP; ++i) {
@@ -188,7 +165,14 @@ void AlgoGen::Initializate(void) {
 
 }
 
-
+void AlgoGen::Fitness(double (*Fit)(vector<double>)){
+	this->Score.clear();
+	
+	for(int i = 0; i < this->POP; ++i){
+		this->Score.push_back((*Fit)(this->Population[i]));
+	}
+	
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //															Construtores														  //
