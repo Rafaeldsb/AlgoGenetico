@@ -1,51 +1,45 @@
 //#pragma once
 
-
 using namespace std;
 
-
-
-
-class AlgoGen
-{
+class AlgoGen {
 private:
 	
-	int						POP;							// Tamanho da população
-	int						GENERATIONS;					// Tamanho máximo de gerações
-	int						GENERATIONS_WITHOUT_BETTER;		// Generações máximas sem melhorias
+	int POP; // Tamanho da população
+	int GENERATIONS; // Tamanho máximo de gerações
+	int GENERATIONS_WITHOUT_BETTER; // Generações máximas sem melhorias
 
-	double					per_elitism;
+	double per_elitism;
 
-	int						nGene = 0;
+	int nGene = 0;
 
-	vector<string>			header;							// Header do alfabeto
-	vector<vector<double>>	Alph;							// Alfabeto
+	vector<string> header; // Header do alfabeto
+	vector<vector<double>> Alph; // Alfabeto
 	
 
-	vector<vector<double>>	Population;						// População atual
-	vector<double>			Score;							// Score da população atual
+	vector<vector<double>> Population; // População atual
+	vector<double> Score; // Score da população atual
 
-	vector<short>			Pais_pos;						// Posições dos pais;
+	vector<short> Pais_pos; // Posições dos pais;
 
 public:
 	
-	void					Set_input(string header, vector<double> alpha);
+	void Set_input(string header, vector<double> alpha);
 
-	static vector<double>	Set_array(double inicial, double final, double step);
+	static vector<double> Set_array(double inicial, double final, double step);
 	
-	void					Initializate(void);
+	void Initializate(void);
 
-	void 					Fitness(double (*Fit)(vector<double>));
+	void Fitness(double (*Fit)(vector<double>));
 
 	
-	double					Sum(void);
+	double Sum(void);
 
-	void					SelectParents(void);
+	void SelectParents(void);
 
-	void					Print(void);
+	void Print(void);
 
-	bool					IsFather(int id);
-	
+	bool IsFather(int id);
 
 	void SetAlgoGen(int pop, int gener, int gener_wb, double elit);
 	AlgoGen(){}
@@ -66,8 +60,6 @@ void AlgoGen::Set_input(string header, vector<double> alpha) {
 	this->nGene++;
 }
 
-
-
 vector<double> AlgoGen::Set_array(double inicial, double final, double step) {
 	vector<double> temp;
 	final += step / 2;
@@ -77,7 +69,6 @@ vector<double> AlgoGen::Set_array(double inicial, double final, double step) {
 
 	return temp;
 }
-
 
 double AlgoGen::Sum(void) {
 	double S = 0;
@@ -185,6 +176,5 @@ void AlgoGen::SetAlgoGen(int pop, int gener, int gener_wb, double elit){
 }
 
 
-AlgoGen::~AlgoGen()
-{
+AlgoGen::~AlgoGen(){
 }
